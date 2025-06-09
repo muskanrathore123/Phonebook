@@ -33,8 +33,36 @@ let phonebookSlice= createSlice({
        },
        setFilterContact:(state,action)=>{
         state.filter=action.payload
+       },
+
+       setBookmark:(state,action)=>{
+        let{id,updateBookmark}=action.payload
+          let index=state.data.findIndex((val)=>val.id===id)
+          if(index!==-1){
+            // state.data[index].bookmark=updateBookmark
+         var updateData=   {...state.data[index],bookmark:updateBookmark}
+          }
+
+          state.data.splice(index,1)
+
+          if(updateBookmark){
+            state.data.unshift(updateData);
+          }
+       },
+
+       setCloseBookmark:(state,action)=>{
+        let{id,closeBookmark}=action.payload
+          let index=state.data.findIndex((val)=>val.id===id)
+          if(index!==-1){
+           var updateData={...state.data[index],bookmark:closeBookmark}                       
+          }
+          state.data.splice(index,1)
+
+          if(!closeBookmark){
+            state.data.push(updateData)
+          }
        }
     }
 })
-export const{contactDetail,addContactData,deleteData,searchContact,setFilterContact}=phonebookSlice.actions;
+export const{contactDetail,addContactData,deleteData,searchContact,setFilterContact,setBookmark,setCloseBookmark}=phonebookSlice.actions;
 export default phonebookSlice.reducer;
