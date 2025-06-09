@@ -22,7 +22,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
-
+import { IoBookmarkOutline } from "react-icons/io5";
+import { FaBookmark } from "react-icons/fa";
+import { setBookmark ,setCloseBookmark} from '../Redux/reduxSlice';
 
 const style = {
   position: 'absolute',
@@ -46,6 +48,7 @@ const [open, setOpen] = React.useState(false);
   let dispatch=useDispatch()
 
   
+console.log(data);
 
   const handleClose = () => {
     setOpen(false);
@@ -94,8 +97,20 @@ const [open, setOpen] = React.useState(false);
   function showUserData(data){
     setObj(data);    
   setOpen(true);  
-
   }
+
+
+  function handleOpenBookmark(id,bookmark){
+      let updateBookmark=!bookmark;
+     dispatch(setBookmark({id,updateBookmark}))
+               
+    }
+
+    function handleCloseBookmark(id,bookmark){
+      let closeBookmark=!bookmark;      
+        dispatch(setCloseBookmark({id,closeBookmark}))
+    }
+
   return (
     <Paper sx={{ width: '50%', overflow: 'hidden',  margin:'auto', marginTop:'50px'}}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -150,10 +165,19 @@ const [open, setOpen] = React.useState(false);
                                     </TableCell>      
                                     <TableCell>
                                       <MdEdit onClick={()=>handleEdit(row.id,row)} style={{width:'30px',height:'30px'}}/>
-                                      </TableCell> 
+                                      </TableCell>
+                                      <TableCell>
+                                        {
+                                            row.bookmark?(
+                                            <FaBookmark style={{width:'30px',height:'30px'}} onClick={()=>handleCloseBookmark(row.id,row.bookmark)}/> 
+                                          ):(
+                                             <IoBookmarkOutline style={{width:'30px',height:'30px'}} onClick={()=>handleOpenBookmark(row.id,row.bookmark)}/>
+                                          )
+                                        }
+                                      </TableCell>
                                       <TableCell>
                                       <MdDelete onClick={()=>handleDelete(row.id)}  style={{width:'30px',height:'30px'}}/>
-                                      </TableCell>                               
+                            </TableCell>                               
                           </>
                         )                    
                       }                                          
